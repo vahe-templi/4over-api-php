@@ -41,7 +41,7 @@ $turnaroundOptionGroup = $optionGroupList->getTurnaroundOptionGroup();
 $turnaroundOption = $turnaroundOptionGroup->getOptions()[0];
 
 /** @var string */
-$turnaroundUuid = $turnaroundOption->getRunsizeUuid();
+$runsizeUuid = $turnaroundOption->getRunsizeUuid();
 
 /** @var string */
 $colorspecUuid = $turnaroundOption->getColorspecUuid();
