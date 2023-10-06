@@ -3,12 +3,18 @@
 namespace FourOver\Entities;
 
 use FourOver\Entities\Interfaces\Entity;
+use FourOver\Entities\Interfaces\Arrayable;
 
 abstract class BaseEntity implements Entity
 {
-    public function toArray() {
+    /**
+     * Converts entity and all of its properties to an array
+     *
+     * @return array
+     */
+    public function toArray() : array {
         $array = [];
-        $reflection = new ReflectionClass($this);
+        $reflection = new \ReflectionClass($this);
 
         foreach ($reflection->getProperties() as $property) {
             $property->setAccessible(true);

@@ -6,17 +6,26 @@ use FourOver\Entities\BaseEntity;
 
 class Category extends BaseEntity 
 {
-    private string $categoryUuid;
+    /**
+     * @var string
+     */
+    private string $category_uuid;
 
-    private string $categoryName;
+    /**
+     * @var string
+     */
+    private string $category_name;
 
-    private string $categoryDescription;
+    /**
+     * @var string
+     */
+    private string $category_description;
 
     public function __construct(string $categoryUuid, string $categoryName, string $categoryDescription)
     {
-        $this->categoryUuid = $categoryUuid;
-        $this->categoryName = $categoryName;
-        $this->categoryDescription = $categoryDescription;
+        $this->category_uuid = $categoryUuid;
+        $this->category_name = $categoryName;
+        $this->category_description = $categoryDescription;
     }
 
     /**
@@ -24,7 +33,7 @@ class Category extends BaseEntity
      */
     public function getCategoryDescription(): string
     {
-        return $this->categoryDescription;
+        return $this->category_description;
     }
 
     /**
@@ -32,7 +41,7 @@ class Category extends BaseEntity
      */
     public function getCategoryName(): string
     {
-        return $this->categoryName;
+        return $this->category_name;
     }
 
     /**
@@ -40,6 +49,6 @@ class Category extends BaseEntity
      */
     public function getCategoryUuid(): string
     {
-        return $this->categoryUuid;
+        return $this->category_uuid;
     }
 }

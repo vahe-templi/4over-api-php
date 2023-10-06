@@ -2,7 +2,10 @@
 
 namespace FourOver\Services;
 
+use \JsonMapper;
 use FourOver\BaseApiClient;
+use FourOver\Entities\Interfaces\Entity;
+use FourOver\Entities\Interfaces\EntityList;
 
 abstract class AbstractService implements ServiceInterface
 {
@@ -12,11 +15,22 @@ abstract class AbstractService implements ServiceInterface
     private BaseApiClient $apiClient;
 
     /**
+     * https://github.com/cweiske/jsonmapper
+     * @var JsonMapper
+     */
+    private JsonMapper $mapper;
+
+    /**
      * @param BaseApiClient $apiClient
      */
     public function __construct(BaseApiClient $apiClient)
     {
         $this->apiClient = $apiClient;
+        
+        $this->mapper = new JsonMapper();
+        $this->mapper->bIgnoreVisibility = true;
+        $this->mapper->bEnforceMapType = false;
+        $this->mapper->bRemoveUndefinedAttributes = true;
     }
 
     /**
@@ -24,15 +38,92 @@ abstract class AbstractService implements ServiceInterface
      * @param string $path ex. "/printproducts/productsfeed?product_uuid={uuid}"
      * @param array $params
      * 
-     * @return \FourOver\Entities\Interfaces\Entity|FourOver\Entities\Interfaces\EntityList
+     * @return array array api response.
      */
-    protected function request(string $method, string $path, array $params = []) : mixed
+    protected function request(string $method, string $path, array $params = []) : array
     {
         return $this->getApiClient()->request($method, $path, $params);
     }
 
+    /**
+     * @return BaseApiClient
+     */
     protected function getApiClient() : BaseApiClient
     {
         return $this->apiClient;
+    }
+
+    /**
+     * @return JsonMapper
+     */
+    private function getMapper() : JsonMapper
+    {
+        return $this->mapper;
+    }
+
+    /**
+     * @param string $entityPath ex. 'FourOver\Entities\Product\Category' or Category::class
+     * @throws \TypeError
+     * 
+     * @return void
+     */
+    private static function throwExceptionIfObjectIsNotValidEntity(string $entityPath) : void
+    {
+        if (!class_exists($entityPath) || !in_array(Entity::class, class_implements($entityPath)) && !in_array(EntityList::class, class_implements($entityPath))) {
+            throw new \TypeError("The provided class $entityPath does not implement either Entity or EntityList interfaces.");
+        }
+    }
+
+    /**
+     * @param array $apiJsonResponse
+     * @param string $entityPath ex. 'FourOver\Entities\Product\Category' or Category::class or CategoryList::class
+     * @param string|null $entityListPath
+     * 
+     * @return Entity|EntityList
+     */
+    protected function mapResponseToEntity(array $apiJsonResponse, string $entityPath, string $entityListPath = null)
+    {
+        // @TODO Check $entityPath and $entityListPath seperately
+        self::throwExceptionIfObjectIsNotValidEntity($entityPath);
+
+        // In case of some calls API returns multiple elements (ex. product feed) and the very first 
+        // element in the response will be 'entities' which contains actual data. In such case we want the mapper to use
+        // mapArray() which will return an object that implements EntityList interface.
+        // Some API calls return a single entity (ex. shipping quote) and in such case we want to use map() instead of mapArray()
+        // Refer to https://github.com/cweiske/jsonmapper#basic-usage
+        if($entityListPath === null)
+            return $this->getMapper()->map($apiJsonResponse, $entityPath);
+
+        // @TODO ??? Add page pagination for EntityList
+        /**
+         * @var Entity|EntityList
+         */
+        return $this->getMapper()->mapArray($apiJsonResponse['entities'], new $entityListPath(), $entityPath);
+    }
+
+    /**
+     * @param string $method
+     * @param string $path
+     * @param array $params http client parameters (POST data, url parameters, headers etc.) Refer to guzzle http docs
+     * @param string $entity
+     * @param string|null $entityPath
+     * 
+     * @return Entity|EntityList
+     */
+    protected function getResource(
+        string $method, 
+        string $path, 
+        array $params = [], 
+        string $entityPath, 
+        string $entityListPath = null
+    ) {
+        self::throwExceptionIfObjectIsNotValidEntity($entityPath);
+
+        /** @var array */
+        $jsonApiResponse= $this->request($method, $path, $params);
+
+        return $this->mapResponseToEntity(
+            $jsonApiResponse, $entityPath, $entityListPath
+        );
     }
 }

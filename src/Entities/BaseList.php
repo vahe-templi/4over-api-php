@@ -5,30 +5,58 @@ namespace FourOver\Entities;
 use FourOver\Entities\Interfaces\Entity;
 use FourOver\Entities\Interfaces\EntityList;
 
-abstract class BaseList implements EntityList {
-    protected $items = [];
+abstract class BaseList extends \ArrayObject implements EntityList {
 
-    public function __construct(array $items) {
-        foreach($items as $item) {
-            $type = $this->getType();
+    /**
+     * Calls \ArrayObject's constructor to make it work like an array.
+     *
+     * @param Entity ...$entities
+     */
+    public function __construct(Entity ...$entities) {
+        // @TODO need to do it in a different way since you can't call an abstract method getType() in throwExceptionIfNotTypeSafe()
+        // $this->throwExceptionIfNotTypeSafe(...$entities);
 
+        parent::__construct($entities);
+    }
+
+    /**
+     * Make sure that all elements are of the same type so the list is type safe just like all lists in C#
+     *
+     * @param Entity ...$entities
+     * @return void
+     */
+    private static function throwExceptionIfNotTypeSafe(Entity ...$entities)
+    {
+        $type = self::getType();
+
+        foreach($entities as $item) 
+        {
             if(!$item instanceof $type)
                 throw new \Exception("$item is not $type");
 
             if(!$item instanceof Entity)
                 throw new \Exception("$item does not implement FourOver\Entities\Interfaces\Entity interface.");
         }
-
-        $this->items = $items;
     }
 
-    public function toArray() {
+    /**
+     * Converts list and everything inside it to an array
+     *
+     * @return array
+     */
+    public function toArray() : array {
         $result = [];
-        foreach ($this->items as $item) {
+        $entities = $this->getArrayCopy();
+        foreach ($entities as $item) {
             $result[] = $item->toArray();
         }
         return $result;
     }
 
-    abstract protected function getType() : Entity;
+    /**
+     * Child class will need to specify its type so the list will be type safe.
+     *
+     * @return string
+     */
+    abstract public static function getType() : string;
 }

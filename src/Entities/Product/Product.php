@@ -1,6 +1,6 @@
 <?php
 
-namespace FourOver\Entities;
+namespace FourOver\Entities\Product;
 
 use FourOver\Entities\BaseEntity;
 
@@ -9,33 +9,40 @@ class Product extends BaseEntity
     /**
      * @var string
      */
-    private string $productUuid;
+    private string $product_uuid;
 
     /**
      * @var string
      */
-    private string $productCode;
+    private string $product_code;
 
     /**
      * @var string
      */
-    private string $productDescription;
+    private string $product_description;
 
     /**
-     * @var CategoryList
+     * @var CategoryList[Category]
      */
     private CategoryList $categories;
+
+    /**
+     * @var OptionGroupList[OptionGroup]
+     */
+    private OptionGroupList $product_option_groups;
 
     /**
      * @param string $productUuid
      * @param string $productCode
      * @param string $productDescription
+     * @param CategoryList $categoryList
      */
-    public function __construct(string $productUuid, string $productCode, string $productDescription)
+    public function __construct(string $productUuid, string $productCode, string $productDescription, CategoryList $categories)
     {
-        $this->productUuid = $productUuid;
-        $this->productCode = $productCode;
-        $this->getProductDescription = $productDescription;
+        $this->product_uuid = $productUuid;
+        $this->product_code = $productCode;
+        $this->product_description = $productDescription;
+        $this->categories = $categories;
     }
 
     /**
@@ -43,7 +50,7 @@ class Product extends BaseEntity
      */
     public function getProductCode(): string
     {
-        return $this->productCode;
+        return $this->product_code;
     }
 
     /**
@@ -51,7 +58,7 @@ class Product extends BaseEntity
      */
     public function getProductDescription(): string
     {
-        return $this->productDescription;
+        return $this->product_description;
     }
 
     /**
@@ -59,11 +66,11 @@ class Product extends BaseEntity
      */
     public function getProductUuid(): string
     {
-        return $this->productUuid;
+        return $this->product_uuid;
     }
 
     /**
-     * @return CategoryList
+     * @return CategoryList[Category]
      */
     public function getCategories(): CategoryList
     {

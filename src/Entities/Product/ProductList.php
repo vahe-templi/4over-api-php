@@ -4,13 +4,13 @@ namespace FourOver\Entities\Product;
 
 use FourOver\Entities\BaseList;
 
-class CategoryList extends BaseList
+class ProductList extends BaseList
 {
     /**
      * @return string
      */
     public static function getType() : string
     {
-        return Category::class;
+        return Product::class;
     }
 }
