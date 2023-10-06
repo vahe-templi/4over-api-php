@@ -76,4 +76,12 @@ class Product extends BaseEntity
     {
         return $this->categories;
     }
+
+    /**
+     * @return OptionGroupList[OptionGroup]
+     */
+    public function getProductOptionGroups(): OptionGroupList
+    {
+        return $this->product_option_groups;
+    }
 }

@@ -54,6 +54,26 @@ abstract class BaseList extends \ArrayObject implements EntityList {
     }
 
     /**
+     * Get entire entity containing specific value.
+     * 
+     * @param string $key
+     * @param mixed $value
+     * 
+     * @return mixed
+     */
+    protected function find(string $key, $value)
+    {
+        $entities = $this->getArrayCopy();
+
+        foreach($entities as $entity)
+        {
+            if($entity->{$key} === $value)
+                return $entity;
+        }
+
+        return null;
+    }
+    /**
      * Child class will need to specify its type so the list will be type safe.
      *
      * @return string

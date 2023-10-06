@@ -27,4 +27,20 @@ class Option extends BaseEntity
      * @var OptionPriceList[OptionPrice]
      */
     private OptionPriceList $option_prices_list;
+
+    /**
+     * @return string
+     */
+    public function getRunsizeUuid() : string
+    {
+        return $this->runsize_uuid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColorspecUuid() : string
+    {
+        return $this->colorspec_uuid;
+    }
 }
