@@ -15,11 +15,11 @@ class FourOverApiClient extends BaseApiClient {
     /**
      * @param string $public_key
      * @param string $private_key
-     * @param FourOver\HttpClient $httpClient
+     * @param string $environmentType either 'LIVE' or 'SANDBOX'
      */
-    public function __construct(string $public_key, string $private_key)
+    public function __construct(string $public_key, string $private_key, string $environmentType)
     {
-        parent::__construct($public_key, $private_key);
+        parent::__construct($public_key, $private_key, $environmentType);
 
         $this->serviceFactory = new ServiceFactory();
     }

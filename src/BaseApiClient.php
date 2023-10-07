@@ -8,14 +8,22 @@ use GuzzleHttp\Psr7\Request;
 class BaseApiClient {
 
     /**
-     * @var string BASE_URL
+     * @var array Envrionment map (https://api-users.4over.com/?page_id=22)
      */
-    const BASE_URL = 'https://api.4over.com';
+    const ENVIRONMENTS = [
+        'LIVE' => 'https://api.4over.com',
+        'SANDBOX' => 'https://sandbox-api.4over.com'
+    ];
 
     /**
      * @var array Valid HTTP methods that 4over API supports
      */
     const VALID_HTTP_METHODS = ['GET', 'DELETE', 'POST', 'PUT', 'PATCH'];
+
+    /**
+     * @var string Base URL
+     */
+    private string $baseUrl;
 
     /**
      * @var string Public key
@@ -35,9 +43,10 @@ class BaseApiClient {
     /**
      * @param string $publicKey
      * @param string $privateKey
-     * @param \Psr\Http\Client\ClientInterface $httpClient Any HTTP client which is compatible with PSR
+     * @param string|null $environmentType either 'LIVE' or 'SANDBOX'
+     * @param \Psr\Http\Client\ClientInterface|null $httpClient Any HTTP client which is compatible with PSR
      */
-    public function __construct(string $publicKey, string $privateKey, \Psr\Http\Client\ClientInterface $httpClient = null)
+    public function __construct(string $publicKey, string $privateKey, string $environmentType = null, \Psr\Http\Client\ClientInterface $httpClient = null)
     {
         $this->publicKey = $publicKey;
         
@@ -48,6 +57,33 @@ class BaseApiClient {
         } else {
             $this->httpClient = $httpClient;
         }
+
+        $this->setEnvironment($environmentType);
+    }
+
+    /**
+     * Sets environment type https://api-users.4over.com/?page_id=22
+     *
+     * @param string $type either 'LIVE' or 'SANDBOX'
+     * @return void
+     */
+    private function setEnvironment(string $type) : void
+    {
+        $type = strtoupper($type);
+        $baseUrl = \array_key_exists($type, self::ENVIRONMENTS) ? self::ENVIRONMENTS[$type] : null;
+
+        if($baseUrl === null)
+            throw new \InvalidArgumentException("Invalid envrionment type '$type'. Accepted types: 'LIVE', 'SANDBOX'.");
+
+        $this->baseUrl = $baseUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBaseUrl() : string
+    {
+        return $this->baseUrl;
     }
 
     /**
@@ -61,7 +97,7 @@ class BaseApiClient {
      */
     public function request(string $method, string $path, array $params = []) : array
     {
-        $request = $this->prepareRequest($method, self::prepareUri($path));
+        $request = $this->prepareRequest($method, $this->prepareUri($path));
 
         $response = $this->getHttpClient()->send($request, $params);
 
@@ -76,9 +112,9 @@ class BaseApiClient {
      * 
      * @return string full URI ex. "https://api.4over.com/printproducts/productsfeed?product_uuid={uuid}"
      */
-    private static function prepareUri(string $path) : string
+    private function prepareUri(string $path) : string
     {
-        return self::BASE_URL . $path;
+        return $this->getBaseUrl() . $path;
     }
 
     /**
