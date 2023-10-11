@@ -23,7 +23,7 @@ require 'vendor/autoload.php';
 
 use FourOver\FourOverApiClient;
 
-$client = new FourOverApiClient('PUBLIC_KEY', 'PRIVATE_KEY');
+$client = new FourOverApiClient('PUBLIC_KEY', 'PRIVATE_KEY', 'SANDBOX'); // or 'LIVE' instead of 'SANDBOX'
 
 /** 
  * Some products don't have turnaround option group so try a different index if it fails
