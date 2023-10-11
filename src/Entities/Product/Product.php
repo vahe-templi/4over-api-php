@@ -32,20 +32,6 @@ class Product extends BaseEntity
     private OptionGroupList $product_option_groups;
 
     /**
-     * @param string $productUuid
-     * @param string $productCode
-     * @param string $productDescription
-     * @param CategoryList $categoryList
-     */
-    public function __construct(string $productUuid, string $productCode, string $productDescription, CategoryList $categories)
-    {
-        $this->product_uuid = $productUuid;
-        $this->product_code = $productCode;
-        $this->product_description = $productDescription;
-        $this->categories = $categories;
-    }
-
-    /**
      * @return string
      */
     public function getProductCode(): string

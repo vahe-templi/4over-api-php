@@ -5,10 +5,8 @@
     "require": {
         "guzzlehttp/guzzle": "^7.8",
         "psr/http-message": "^2.0",
-        "netresearch/jsonmapper": "^4.2"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^9.6"
+        "netresearch/jsonmapper": "^4.2",
+        "kevinrob/guzzle-cache-middleware": "^4.1"
     },
     "license": "MIT",
     "autoload": {

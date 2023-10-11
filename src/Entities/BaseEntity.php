@@ -7,14 +7,12 @@ use FourOver\Entities\Interfaces\Arrayable;
 
 abstract class BaseEntity implements Entity
 {
+     /**
+     * Unfortunately, 4over API is not consistent and sometimes it returns same entities with different key names in certain API calls
+     * 
+     * @var array
+     */
     protected array $KEY_NAMES;
-
-    private \ReflectionClass $relfectionClass;
-
-    public function __construct()
-    {
-        $this->relfectionClass = new \ReflectionClass($this);
-    }
 
     /**
      * Some keys might differ in different API calls, and we want to scan the response for all possible names
@@ -39,6 +37,11 @@ abstract class BaseEntity implements Entity
         return $actualProperty !== null ? $this->getPrivateProperty($actualProperty) : null;
     }
 
+    private function getReflection()
+    {
+        return new \ReflectionClass($this);
+    }
+
     /**
      * Some properties are set private, but we still want to retrieve them so we use this function
      * @param string $property Class property name
@@ -47,7 +50,7 @@ abstract class BaseEntity implements Entity
      */
     private function getPrivateProperty(string $property)
     {
-        $property = $this->relfectionClass->getProperty($property);
+        $property = $this->getReflection()->getProperty($property);
         $property->setAccessible(true);
 
         return $property->getValue($this);
@@ -60,7 +63,7 @@ abstract class BaseEntity implements Entity
      * @return string|null
      */
     private function findProperty(array $map) {
-        $classProperties = $this->relfectionClass->getProperties();
+        $classProperties = $this->getReflection()->getProperties();
     
         foreach ($map as $propertyName) {
             foreach ($classProperties as $property) {
@@ -90,11 +93,16 @@ abstract class BaseEntity implements Entity
      */
     public function toArray() : array {
         $array = [];
-        $reflection = $this->relfectionClass;
+        $reflection = $this->getReflection();
+        $properties = $reflection->getProperties();
 
-        foreach ($reflection->getProperties() as $property) {
+        foreach ($properties as $property) {
             $property->setAccessible(true);
             $propertyName = $property->getName();
+
+            if(!$property->isInitialized($this))
+                continue;
+
             $propertyValue = $property->getValue($this);
 
             if($propertyValue instanceof Arrayable) {

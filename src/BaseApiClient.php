@@ -62,6 +62,18 @@ class BaseApiClient {
     }
 
     /**
+     * Sets an HTTP client. You might want to pass an http client that is configured for caching.
+     * For an example see: https://github.com/Kevinrob/guzzle-cache-middleware
+     *
+     * @param \Psr\Http\Client\ClientInterface $httpClient
+     * @return void
+     */
+    public function setHttpClient(\Psr\Http\Client\ClientInterface $httpClient)
+    {
+        $this->httpClient = $httpClient;
+    }
+
+    /**
      * Sets environment type https://api-users.4over.com/?page_id=22
      *
      * @param string $type either 'LIVE' or 'SANDBOX'

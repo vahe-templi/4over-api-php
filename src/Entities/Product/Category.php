@@ -6,11 +6,6 @@ use FourOver\Entities\BaseEntity;
 
 class Category extends BaseEntity 
 {
-    /**
-     * Unfortunately, 4over API is not consistent and sometimes it returns same entities with different key names in certain API calls
-     * 
-     * @var array
-     */
     protected array $KEY_NAMES = [
         '_uuid' => [
             'category_uuid',
