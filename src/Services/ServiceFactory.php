@@ -8,7 +8,8 @@ class ServiceFactory
      * @var array
      */
     private static $classMap = [
-        'products' => ProductService::class
+        'products' => ProductService::class,
+        'categories' => CategoryService::class
     ];
 
     /**

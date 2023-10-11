@@ -18,8 +18,20 @@ class ProductService extends AbstractService
         return $this->getResource('GET', '/printproducts/productsfeed', [], Product::class, ProductList::class);
     }
 
-    public function getAllProductCategories()
+
+    /**
+     * https://api-users.4over.com/?page_id=92
+     *
+     * @return ProductList
+     */
+    public function getProductsByCategory(string $categoryUuid) : ProductList
     {
-        // @TODO
+        return $this->getResource(
+            'GET', 
+            "/printproducts/categories/{$categoryUuid}/products", 
+            ['query' => ['max' => 500]], 
+            Product::class, 
+            ProductList::class
+        );
     }
 }

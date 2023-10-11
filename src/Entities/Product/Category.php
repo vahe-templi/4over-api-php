@@ -7,6 +7,26 @@ use FourOver\Entities\BaseEntity;
 class Category extends BaseEntity 
 {
     /**
+     * Unfortunately, 4over API is not consistent and sometimes it returns same entities with different key names in certain API calls
+     * 
+     * @var array
+     */
+    protected array $KEY_NAMES = [
+        '_uuid' => [
+            'category_uuid',
+            'id'
+        ],
+        '_name' => [
+            'category_name',
+            'name'
+        ],
+        '_description' => [
+            'category_description',
+            'description'
+        ]
+    ];
+
+    /**
      * @var string
      */
     private string $category_uuid;
@@ -21,19 +41,27 @@ class Category extends BaseEntity
      */
     private string $category_description;
 
-    public function __construct(string $categoryUuid, string $categoryName, string $categoryDescription)
-    {
-        $this->category_uuid = $categoryUuid;
-        $this->category_name = $categoryName;
-        $this->category_description = $categoryDescription;
-    }
+    /**
+     * @var string
+     */
+    private string $id;
+
+    /**
+     * @var string
+     */
+    private string $name;
+
+    /**
+     * @var string
+     */
+    private string $description;
 
     /**
      * Get the value of categoryDescription
      */
     public function getCategoryDescription(): string
     {
-        return $this->category_description;
+        return $this->_description;
     }
 
     /**
@@ -41,7 +69,7 @@ class Category extends BaseEntity
      */
     public function getCategoryName(): string
     {
-        return $this->category_name;
+        return $this->_name;
     }
 
     /**
@@ -49,6 +77,6 @@ class Category extends BaseEntity
      */
     public function getCategoryUuid(): string
     {
-        return $this->category_uuid;
+        return $this->_uuid;
     }
 }

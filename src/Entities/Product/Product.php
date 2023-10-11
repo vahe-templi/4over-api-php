@@ -70,9 +70,9 @@ class Product extends BaseEntity
     }
 
     /**
-     * @return CategoryList[Category]
+     * @return CategoryList[Category]|string
      */
-    public function getCategories(): CategoryList
+    public function getCategories()
     {
         return $this->categories;
     }

@@ -10,7 +10,7 @@ class BaseApiClient {
     /**
      * @var array Envrionment map (https://api-users.4over.com/?page_id=22)
      */
-    const ENVIRONMENTS = [
+    private const ENVIRONMENTS = [
         'LIVE' => 'https://api.4over.com',
         'SANDBOX' => 'https://sandbox-api.4over.com'
     ];
@@ -18,7 +18,7 @@ class BaseApiClient {
     /**
      * @var array Valid HTTP methods that 4over API supports
      */
-    const VALID_HTTP_METHODS = ['GET', 'DELETE', 'POST', 'PUT', 'PATCH'];
+    private const VALID_HTTP_METHODS = ['GET', 'DELETE', 'POST', 'PUT', 'PATCH'];
 
     /**
      * @var string Base URL
@@ -81,7 +81,7 @@ class BaseApiClient {
     /**
      * @return string
      */
-    public function getBaseUrl() : string
+    private function getBaseUrl() : string
     {
         return $this->baseUrl;
     }

@@ -6,6 +6,7 @@ use \JsonMapper;
 use FourOver\BaseApiClient;
 use FourOver\Entities\Interfaces\Entity;
 use FourOver\Entities\Interfaces\EntityList;
+use FourOver\Helpers\RemoveArrayElementsThatContainUrlAddresses;
 
 abstract class AbstractService implements ServiceInterface
 {
@@ -42,7 +43,12 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function request(string $method, string $path, array $params = []) : array
     {
-        return $this->getApiClient()->request($method, $path, $params);
+        $response = $this->getApiClient()->request($method, $path, $params);
+
+        // We need to remove elements that contain URL addresses because otherwise it will mess up the mapper.
+        RemoveArrayElementsThatContainUrlAddresses::removeUrlsFromArray($response);
+
+        return $response;
     }
 
     /**
