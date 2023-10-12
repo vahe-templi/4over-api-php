@@ -22,6 +22,15 @@ abstract class AbstractService implements ServiceInterface
     private JsonMapper $mapper;
 
     /**
+     * To avoid problems with the JSON mapper some of the redundant keys from the API response are skipped.
+     * 
+     * @var array
+     */
+    private const API_RESPONSE_KEYS_TO_SKIP = [
+        'entities', 'job'
+    ];
+
+    /**
      * @param BaseApiClient $apiClient
      */
     public function __construct(BaseApiClient $apiClient)
@@ -45,10 +54,27 @@ abstract class AbstractService implements ServiceInterface
     {
         $response = $this->getApiClient()->request($method, $path, $params);
 
-        // We need to remove elements that contain URL addresses because otherwise it will mess up the mapper.
-        RemoveArrayElementsThatContainUrlAddresses::removeUrlsFromArray($response);
+        return $this->prepareResponseForMapping($response);
+    }
 
-        return $response;
+    /**
+     * Prepares the API response to be mapped. Certain elements or keys need to be removed for the JSON mapper to work correctly.
+     *
+     * @param array $apiJsonResponse API json response to be cleaned.
+     * @return array Clean and prepared API json response.
+     */
+    private function prepareResponseForMapping(array $apiJsonResponse) : array
+    {
+        // We need to remove elements that contain URL addresses because otherwise it will mess up the mapper.
+        RemoveArrayElementsThatContainUrlAddresses::removeUrlsFromArray($apiJsonResponse);
+
+        // Skip the first key of the response (ex. 'entities' or 'job') so it does not mess up up the json mapper
+        $firstKey = key($apiJsonResponse);
+
+        if(in_array($firstKey, self::API_RESPONSE_KEYS_TO_SKIP))
+            $apiJsonResponse = $apiJsonResponse[$firstKey];
+
+        return $apiJsonResponse;
     }
 
     /**
@@ -104,7 +130,7 @@ abstract class AbstractService implements ServiceInterface
         /**
          * @var Entity|EntityList
          */
-        return $this->getMapper()->mapArray($apiJsonResponse['entities'], new $entityListPath(), $entityPath);
+        return $this->getMapper()->mapArray($apiJsonResponse, new $entityListPath(), $entityPath);
     }
 
     /**

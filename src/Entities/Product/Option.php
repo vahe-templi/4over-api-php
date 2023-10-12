@@ -31,6 +31,14 @@ class Option extends BaseEntity
     /**
      * @return string
      */
+    public function getOptionUuid() : string
+    {
+        return $this->option_uuid;
+    }
+
+    /**
+     * @return string
+     */
     public function getRunsizeUuid() : string
     {
         return $this->runsize_uuid;

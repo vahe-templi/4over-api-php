@@ -22,13 +22,40 @@ $turnaroundOptionGroup = $optionGroupList->getTurnaroundOptionGroup();
 $turnaroundOption = $turnaroundOptionGroup->getOptions()[0];
 
 /** @var string */
+$colorspecUuid = $turnaroundOption->getColorspecUuid();
+
+/** @var string */
+$turnaroundUuid = $turnaroundOption->getOptionUuid();
+
+/** @var string */
 $runsizeUuid = $turnaroundOption->getRunsizeUuid();
 
 /** @var string */
-$colorspecUuid = $turnaroundOption->getColorspecUuid();
+$productUuid = $product->getProductUuid();
 
-print_r(
-    $colorspecUuid
+$address  = '4301 Washington Road.';
+$address2 = '';
+$city = 'Evans';
+$state = 'GA';
+$country  = 'US';
+$zipcode  = '30809';
+$sets = 20;
+
+/** @var \FourOver\Entities\Shipping\ShippingQuote */
+$shippingQuote = $client->shipping->getShippingQuote(
+    $productUuid,
+    $runsizeUuid,
+    $turnaroundUuid,
+    $colorspecUuid,
+    $address,
+    $address2,
+    $city,
+    $state,
+    $country,
+    $zipcode,
+    $sets
 );
 
-// Result: 32d3c223-f82c-492b-b915-ba065a00862f
+print_r(
+    $shippingQuote
+);

@@ -9,7 +9,8 @@ class ServiceFactory
      */
     private static $classMap = [
         'products' => ProductService::class,
-        'categories' => CategoryService::class
+        'categories' => CategoryService::class,
+        'shipping' => ShippingService::class
     ];
 
     /**

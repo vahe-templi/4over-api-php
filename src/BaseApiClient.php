@@ -164,11 +164,14 @@ class BaseApiClient {
         $publicKey = $this->getPublicKey();
         $signature = $this->getSignature($method);
 
-        // URL parameters
-        $uri .= "?apikey=$publicKey&signature=$signature";
+        $headers = [];
 
-        // ... and HTTP header
-        $headers = ['Authorization' => "API $publicKey:$signature"];
+        if(in_array($method, ['GET', 'DELETE']))
+            // URL parameters
+            $uri .= "?apikey=$publicKey&signature=$signature";
+        else
+            // HTTP header
+            $headers['Authorization'] = "API $publicKey:$signature";
 
         return new Request($method, $uri, $headers);
     }
