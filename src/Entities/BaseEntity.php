@@ -4,9 +4,12 @@ namespace FourOver\Entities;
 
 use FourOver\Entities\Interfaces\Entity;
 use FourOver\Entities\Interfaces\Arrayable;
+use FourOver\Entities\Traits\ConvertsToJson;
 
 abstract class BaseEntity implements Entity
 {
+    use ConvertsToJson;
+
      /**
      * Unfortunately, 4over API is not consistent and sometimes it returns same entities with different key names in certain API calls
      * 
@@ -37,6 +40,9 @@ abstract class BaseEntity implements Entity
         return $actualProperty !== null ? $this->getPrivateProperty($actualProperty) : null;
     }
 
+    /**
+     * @return \ReflectionClass
+     */
     private function getReflection()
     {
         return new \ReflectionClass($this);
@@ -99,6 +105,9 @@ abstract class BaseEntity implements Entity
         foreach ($properties as $property) {
             $property->setAccessible(true);
             $propertyName = $property->getName();
+
+            if($propertyName === 'KEY_NAMES')
+                continue;
 
             if(!$property->isInitialized($this))
                 continue;

@@ -4,9 +4,12 @@ namespace FourOver\Entities;
 
 use FourOver\Entities\Interfaces\Entity;
 use FourOver\Entities\Interfaces\EntityList;
+use FourOver\Entities\Traits\ConvertsToJson;
 
 abstract class BaseList extends \ArrayObject implements EntityList {
 
+    use ConvertsToJson;
+    
     /**
      * Calls \ArrayObject's constructor to make it work like an array.
      *
