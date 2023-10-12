@@ -22,7 +22,8 @@ class ShippingService extends AbstractService
         string $state,
         string $country,
         string $zipcode,
-        int $sets
+        int $sets,
+        array $optionUuids = []
     ) : ShippingQuote {
         $postBodyData = json_encode([
             'product_info' => [
@@ -31,7 +32,7 @@ class ShippingService extends AbstractService
                 'turnaround_uuid' => $turnaroundUuid,
                 'colorspec_uuid' => $colorspecUuid,
                 'sets' => $sets,
-                'option_uuids' => []
+                'option_uuids' => $optionUuids
             ],
             'shipping_address' => [
                 'address' => $address,
