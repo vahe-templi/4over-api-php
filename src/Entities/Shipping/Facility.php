@@ -12,4 +12,12 @@ class Facility extends BaseEntity
     * @var ShippingOptionList[ShippingOption]
     */
     private ShippingOptionList $shipping_options;
+
+    /**
+     * @return ShippingOptionList
+     */
+    public function getShippingOptions() : ShippingOptionList
+    {
+        return $this->shipping_options;
+    }
 }

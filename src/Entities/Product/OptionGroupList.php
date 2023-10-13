@@ -19,7 +19,14 @@ class OptionGroupList extends BaseList
      */
     public function getTurnaroundOptionGroup() : OptionGroup
     {
-        return $this->find('product_option_group_name', 'Turn-Around');
+        // Their API is very inconsistent and in one response the option group is "Turn-Around" and in the other it's "Turn Around Time"
+        $possibilities = [
+            $this->find('product_option_group_name', 'Turn-Around'),
+            $this->find('product_option_group_name', 'Turn Around Time')
+        ];
+
+        // Return first non-null value from $possibilities
+        return current(array_filter($possibilities));
     }
 
     /**

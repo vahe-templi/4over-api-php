@@ -18,7 +18,6 @@ class ProductService extends AbstractService
         return $this->getResource('GET', '/printproducts/productsfeed', [], Product::class, ProductList::class);
     }
 
-
     /**
      * https://api-users.4over.com/?page_id=92
      *
@@ -32,6 +31,22 @@ class ProductService extends AbstractService
             ['query' => ['max' => 500]], 
             Product::class, 
             ProductList::class
+        );
+    }
+
+    /**
+     * https://api-users.4over.com/?page_id=92
+     *
+     * @param string $productUuid
+     * @return Product
+     */
+    public function getProduct(string $productUuid) : Product
+    {
+        return $this->getResource(
+            'GET', 
+            "/printproducts/products/{$productUuid}", 
+            [], 
+            Product::class, 
         );
     }
 }
