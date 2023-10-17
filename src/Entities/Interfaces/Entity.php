@@ -2,6 +2,6 @@
 
 namespace FourOver\Entities\Interfaces;
 
-interface Entity extends Arrayable {
+interface Entity extends Arrayable, Jsonable {
 
 }

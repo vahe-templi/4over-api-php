@@ -36,4 +36,12 @@ class OptionGroupList extends BaseList
     {
         return $this->find('product_option_group_name', 'Runsize');
     }
+
+    /**
+     * @return OptionGroup
+     */
+    public function getColorspecOptionGroup() : OptionGroup
+    {
+        return $this->find('product_option_group_name', 'Colorspec');
+    }
 }
