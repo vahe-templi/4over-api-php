@@ -166,13 +166,12 @@ class BaseApiClient {
 
         $headers = [];
 
-        if(in_array($method, ['GET', 'DELETE']))
-            // URL parameters
-            $uri .= "?apikey=$publicKey&signature=$signature";
-        else
-            // HTTP header
-            $headers['Authorization'] = "API $publicKey:$signature";
-
+        // URL parameters
+        $uri .= "?apikey=$publicKey&signature=$signature";
+    
+        // HTTP header
+        $headers['Authorization'] = "API $publicKey:$signature";
+        
         return new Request($method, $uri, $headers);
     }
 
