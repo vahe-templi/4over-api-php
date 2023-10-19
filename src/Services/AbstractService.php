@@ -158,4 +158,14 @@ abstract class AbstractService implements ServiceInterface
             $jsonApiResponse, $entityPath, $entityListPath
         );
     }
+
+    /**
+     * @inheritdoc
+     *
+     * @return boolean
+     */
+    public function isSandboxMode() : bool
+    {
+        return $this->getApiClient()->isSandboxMode();
+    }
 }

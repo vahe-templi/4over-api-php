@@ -14,8 +14,7 @@ class OrderService extends AbstractService
      */
     public function createOrder(
         string $order_id,
-        string $is_test_order,
-        string $coupon_code,
+        $coupon_code,
         bool $skip_conformation,
         int $sets,
         string $product_uuid,
@@ -54,7 +53,7 @@ class OrderService extends AbstractService
     {
         $postBodyData = [
             'order_id' => $order_id,
-            'is_test_order' => $is_test_order,
+            'is_test_order' => $this->isSandboxMode(),
             'coupon_code' => $coupon_code,
             'skip_confirmation' => $skip_conformation,
             'jobs' => [
@@ -105,8 +104,8 @@ class OrderService extends AbstractService
         ];
 
         return $this->getResource(
-            'POST', 
-            '/orders', 
+            'POST',
+            '/orders',
             ['body' => json_encode($postBodyData)], 
             OrderCreatedResponse::class
         );

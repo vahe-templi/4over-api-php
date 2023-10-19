@@ -16,14 +16,14 @@ class BaseApiClient {
     ];
 
     /**
+     * @var string Currently set environment (must be one of the const ENVRIONMENTS keys).
+     */
+    private string $currentEnvironment;
+
+    /**
      * @var array Valid HTTP methods that 4over API supports
      */
     private const VALID_HTTP_METHODS = ['GET', 'DELETE', 'POST', 'PUT', 'PATCH'];
-
-    /**
-     * @var string Base URL
-     */
-    private string $baseUrl;
 
     /**
      * @var string Public key
@@ -87,7 +87,25 @@ class BaseApiClient {
         if($baseUrl === null)
             throw new \InvalidArgumentException("Invalid envrionment type '$type'. Accepted types: 'LIVE', 'SANDBOX'.");
 
-        $this->baseUrl = $baseUrl;
+        $this->currentEnvironment = $type;
+    }
+
+    /**
+     * @return string
+     */
+    private function getEnvironment() : string
+    {
+        return $this->currentEnvironment;
+    }
+
+    /**
+     * Returns true if the API set to 'SANDBOX' mode or otherwise false.
+     * 
+     * @return bool
+     */
+    public function isSandboxMode() : bool
+    {
+        return $this->getEnvironment() === 'SANDBOX' ? true : false;
     }
 
     /**
@@ -95,7 +113,7 @@ class BaseApiClient {
      */
     private function getBaseUrl() : string
     {
-        return $this->baseUrl;
+        return self::ENVIRONMENTS[$this->getEnvironment()];
     }
 
     /**
