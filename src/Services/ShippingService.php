@@ -25,7 +25,7 @@ class ShippingService extends AbstractService
         int $sets,
         array $optionUuids = []
     ) : ShippingQuote {
-        $postBodyData = json_encode([
+        $postBodyData = [
             'product_info' => [
                 'product_uuid' => $productUuid,
                 'runsize_uuid' => $runsizeUuid,
@@ -42,12 +42,12 @@ class ShippingService extends AbstractService
                 'country' => $country,
                 'zipcode' => $zipcode,
             ]
-        ]);
+        ];
 
         return $this->getResource(
             'POST', 
             '/shippingquote', 
-            ['body' => $postBodyData], 
+            ['body' => json_encode($postBodyData)], 
             ShippingQuote::class
         );
     }

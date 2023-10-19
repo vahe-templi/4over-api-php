@@ -2,6 +2,8 @@
 
 namespace FourOver\Services;
 
+use FourOver\Entities\File\FileCreatedResponse;
+
 class ServiceFactory
 {
     /**
@@ -10,7 +12,9 @@ class ServiceFactory
     private static $classMap = [
         'products' => ProductService::class,
         'categories' => CategoryService::class,
-        'shipping' => ShippingService::class
+        'shipping' => ShippingService::class,
+        'orders' => OrderService::class,
+        'files' => FileService::class
     ];
 
     /**
