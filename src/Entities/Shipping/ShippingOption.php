@@ -31,7 +31,7 @@ class ShippingOption extends BaseEntity
     /**
      * @return string
      */
-    public function getSerivceCode() : string
+    public function getServiceCode() : string
     {
         return $this->service_code;
     }
