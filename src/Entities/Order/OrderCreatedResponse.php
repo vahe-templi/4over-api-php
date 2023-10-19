@@ -14,9 +14,9 @@ class OrderCreatedResponse extends BaseEntity
 
    public array $job_ids;
 
-   public array $payment_response;
+   public ?array $payment_response;
 
-   public string $payment_type;
+   public ?string $payment_type;
 
-   public array $errors;
+   public ?array $errors;
 }

@@ -24,7 +24,7 @@ class OrderService extends AbstractService
         array $option_uuids,
         bool $dropship,
         array $files, // see their docs for examples. @todo objects instead of raw arrays
-        string $ship_to_company,
+        $ship_to_company,
         string $ship_to_firstname,
         string $ship_to_lastname,
         string $ship_to_email,
@@ -35,7 +35,7 @@ class OrderService extends AbstractService
         string $ship_to_state,
         string $ship_to_zipcode,
         string $ship_to_country,
-        string $ship_from_company,
+        $ship_from_company,
         string $ship_from_firstname,
         string $ship_from_lastname,
         string $ship_from_email,
