@@ -23,6 +23,16 @@ abstract class BaseList extends \ArrayObject implements EntityList {
     }
 
     /**
+     * Get all elements of the list
+     *
+     * @return array
+     */
+    protected function getItems() : array
+    {
+        return $this->getArrayCopy();
+    }
+
+    /**
      * Make sure that all elements are of the same type so the list is type safe just like all lists in C#
      *
      * @param Entity ...$entities
@@ -49,7 +59,7 @@ abstract class BaseList extends \ArrayObject implements EntityList {
      */
     public function toArray() : array {
         $result = [];
-        $entities = $this->getArrayCopy();
+        $entities = $this->getItems();
         foreach ($entities as $item) {
             $result[] = $item->toArray();
         }
@@ -66,7 +76,7 @@ abstract class BaseList extends \ArrayObject implements EntityList {
      */
     protected function find(string $key, $value)
     {
-        $entities = $this->getArrayCopy();
+        $entities = $this->getItems();
 
         foreach($entities as $entity)
         {

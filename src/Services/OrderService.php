@@ -3,6 +3,9 @@
 namespace FourOver\Services;
 
 use FourOver\Entities\Order\OrderCreatedResponse;
+use FourOver\Entities\Order\StatusList;
+use FourOver\Entities\Order\Status;
+use FourOver\Entities\Order\Tracking;
 
 class OrderService extends AbstractService
 {
@@ -109,5 +112,27 @@ class OrderService extends AbstractService
             ['body' => json_encode($postBodyData)], 
             OrderCreatedResponse::class
         );
+    }
+
+    /**
+     * https://api-users.4over.com/?page_id=98
+     * @param $jobUuid
+     *
+     * @return StatusList
+     */
+    public function getOrderStatus(string $jobUuid) : StatusList
+    {
+        return $this->getResource('GET', "/orders/{$jobUuid}/status", [], Status::class, StatusList::class);
+    }
+
+    /**
+     * https://api-users.4over.com/?page_id=135
+     * @param $jobUuid
+     *
+     * @return Tracking
+     */
+    public function getTrackingNumber(string $jobUuid) : Tracking
+    {
+        return $this->getResource('GET', "/orders/{$jobUuid}/tracking", [], Tracking::class);
     }
 }
