@@ -14,7 +14,8 @@ class FileService extends AbstractService
     public function createFile(string $url) : FileCreatedResponse
     {
         $postBodyData = [
-            'path' => [$url]
+            'path' => [$url],
+            'preflight' => true
         ];
 
         return $this->getResource('POST', '/files', ['body' => json_encode($postBodyData)], FileCreatedResponse::class);
