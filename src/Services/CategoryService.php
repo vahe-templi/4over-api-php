@@ -14,6 +14,12 @@ class CategoryService extends AbstractService
      */
     public function getAllCategories()
     {
-        return $this->getResource('GET', '/printproducts/categories', [], Category::class, CategoryList::class);
+        return $this->getResource(
+            'GET', 
+            '/printproducts/categories', 
+            ['query' => ['max' => 500]], 
+            Category::class, 
+            CategoryList::class
+        );
     }
 }
